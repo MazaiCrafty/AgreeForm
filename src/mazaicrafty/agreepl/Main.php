@@ -35,7 +35,9 @@ class Main extends PluginBase implements Listener{
             "REGISTERED-TITLE" => "sample1",
             "REGISTERED-CONTENT" => "sample2",
             "REGISTERED-AGREE-BUTTON" => "button1",
-            "REGISTERED-AGREE-MESSAGE" => "sample"
+            "REGISTERED-AGREE-MESSAGE" => "sample",
+            "REGISTERED-COMMAND-BUTTON" => "sample",
+            "REGISTERED-COMMAND" => "help"
         ]);
     }
 
@@ -52,7 +54,7 @@ class Main extends PluginBase implements Listener{
     }
 
     private function createRegister(Player $player){
-        $form = self::getFormAPI()->createSimpleForm(
+        $form = self::getFormAPI()->createModalForm(
             function (Player $player, $result){
                 if ($result === null){
                     $message = $this->getMessage("REGISTER-NORESULT-MESSAGE");
@@ -77,14 +79,14 @@ class Main extends PluginBase implements Listener{
 
         $form->setTitle($this->getMessage("REGISTER-TITLE"));
         $form->setContent($this->getMessage("REGISTER-CONTENT"));
-        $form->addButton($this->getMessage("REGISTER-AGREE-BUTTON"));
-        $form->addButton($this->getMessage("REGISTER-DISAGREE-BUTTON"));
+        $form->setButton1($this->getMessage("REGISTER-AGREE-BUTTON"));
+        $form->setButton2($this->getMessage("REGISTER-DISAGREE-BUTTON"));
 
         $form->sendToPlayer($player);
     }
 
     private function createRegistered(Player $player){
-        $form = self::getFormAPI()->createSimpleForm(
+        $form = self::getFormAPI()->createModalForm(
             function (Player $player, $result){
                 if ($result === null) return;
                 switch ($result){
@@ -92,13 +94,19 @@ class Main extends PluginBase implements Listener{
                     $message = $this->getMessage("REGISTERED-AGREE-MESSAGE");
                     $player->sendMessage($message);
                     return;
+
+                    case 0://command
+                    $command = $this->getMessage("REGISTERED-COMMAND");
+                    Server::getInstance()->dispatchCommand($player, $command);
+                    return;
                 }
             }
         );
 
         $form->setTitle($this->getMessage("REGISTERED-TITLE"));
         $form->setContent($this->getMessage("REGISTERED-CONTENT"));
-        $form->addButton($this->getMessage("REGISTERED-AGREE-BUTTON"));
+        $form->setButton1($this->getMessage("REGISTERED-AGREE-BUTTON"));
+        $form->setButton2($this->getMessage("REGISTERED-COMMAND-BUTTON"));
 
         $form->sendToPlayer($player);
     }
@@ -112,6 +120,6 @@ class Main extends PluginBase implements Listener{
         return $this->formapi;
     }
 
-    const AGREE = 0;
-    const DISAGREE = 1;
+    const AGREE = 1;
+    const DISAGREE = 0;
 }
