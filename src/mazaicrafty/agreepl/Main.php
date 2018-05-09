@@ -62,6 +62,7 @@ class Main extends PluginBase implements Listener{
                 switch ($result){
                     case self::AGREE:
                     $this->player_data->set($player->getName(), true);
+                    $this->player_data->save();
                     $message = $this->getMessage("REGISTER-AGREE-MESSAGE");
                     $player->sendMessage($message);
                     return;
