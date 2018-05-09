@@ -26,7 +26,7 @@ class Main extends PluginBase implements Listener{
         $this->player_data = new Config($this->getDataFolder() . "data.yml", Config::YAML);
         $this->messages = new Config($this->getDataFolder() . "Messages.yml", Config::YAML, [
             "REGISTER-TITLE" => "sample1",
-            "REGISTER-COTENT" => "sample2",
+            "REGISTER-CONTENT" => "sample2",
             "REGISTER-AGREE-BUTTON" => "button1",
             "REGISTER-DISAGREE-BUTTON" => "button2",
             "REGISTER-AGREE-MESSAGE" => "sample",
@@ -61,7 +61,7 @@ class Main extends PluginBase implements Listener{
                 }
                 switch ($result){
                     case self::AGREE:
-                    $this->player_data->set($player->getName());
+                    $this->player_data->set($player->getName(), true);
                     $message = $this->getMessage("REGISTER-AGREE-MESSAGE");
                     $player->sendMessage($message);
                     return;

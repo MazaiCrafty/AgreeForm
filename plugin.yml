@@ -5,3 +5,5 @@ api:
  - 3.0.0-ALPHA11
  - 3.0.0-ALPHA12
 load: POSTWORLD
+depend:
+ - FormAPI
